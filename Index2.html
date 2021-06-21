@@ -4,31 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ingreso A la Sopa</title>
-     <!-- Estilos CSS -->
-     <link rel="stylesheet" type="text/css" href="Css/style.css" media="all">
-     <link rel="stylesheet" type="text/css" href="Css/bootstrap.min.css">
-     <link rel="stylesheet" type="text/css" href="Css/jquery-ui.css" >
-     <link rel="stylesheet" type="text/css" href="Css/jquery.tagit.css">
+    <title>Sopa de letras</title>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" type="text/css" href="Css/style.css" media="all">
+    <link rel="stylesheet" type="text/css" href="Css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="Css/jquery-ui.css" >
+    <link rel="stylesheet" type="text/css" href="Css/jquery.tagit.css">
+    <!-- Scripts de tagit,  wordfinder -->
+    <script type="text/javascript" src="Framework/jquery.min.js"></script>
+    <script type="text/javascript" src="Js/wordfind.js"></script>
+    <script type="text/javascript" src="Js/wordfindgame.js"></script>
+    <script type="text/javascript" src="Framework/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="Framework/tag-it.js"></script>
+
+    <!-- Funcion del contador -->
     <script type="text/javascript">
-    
-    function ir(){
+    var cronometro
+   // Funcion parar contador
+     function detenerse(){
+         clearInterval(cronometro);
+     }
+    function carga(){
+        contador_s = 0;
+        contador_m = 0;
+        s = document.getElementById("segundos");
+        m = document.getElementById("minutos");
 
-      if( document.form.loguin.value != 0  ){
-          alert ("Escribir las 5 palabras para La sopa de letras ");
-          window.location = "index.html";
-        }
-      }
-
+         cronometro = setInterval(
+            function(){
+                if(contador_s ==60 ){
+                    contador_s = 0;
+                    contador_m++;
+                    m.innerHTML = contador_m;
+                    if(contador_m==0){
+                        contador_m = 0;
+                    }
+                }
+                s.innerHTML = contador_s;
+                contador_s++;
+            }
+            ,1000);
+    }
 </script>
 </head>
-<body onload="ir()"><center>
-    <h1> <strong>Comenzar El juego</strong>  </h1>
-    <form name="form" action="Comenzar">
-    <p>Usuario<input type="text" name="loguin" id="idname" required></p>
-    <p>Cedula <input type="text" onkeypress='return validaNumericos(event)'/> </p>
-    <input onclick="ir()" type="button" value="iniciar" class="btn btn-danger mr-2">
-    </form>
-    <script src="Js/wordfindgame.js"></script>
-</center></body>
+<body onload=" carga ()">
+ <!-- Contador del Juego -->  
+<div class="container">
+    <div class="row  ocultar text-center">  
+    <p>
+       <span> <strong> SU TIEMPO ES => </strong></span>
+       <span id= "minutos" >0:</span>
+       <span id= "segundos" >0</span>
+    </p>
+
+    </div>
+</div>
+
+ <!-- Script y box para Generar las palabras para la sopa de letras -->           
+        <script type="text/javascript">
+            var listaPalabras;
+            $(document).ready(function () {
+
+                listaPalabras = $("#listaPalabras").tagit({});
+                Crear();
+           
+            });
+        </script>
+   <div class="container">
+        <div class="row  ocultar text-center">
+                <br/>
+                <div class="panel panel-default">
+                <div class="panel-heading"><h4>1.- Escribe las 5 palabras, luego presiona el botón 
+                    <strong>"Jugar"</strong></h4></div>
+                <div class="panel-body"><ul id="listaPalabras"> </div></ul>
+                </div>
+         </div>
+<!-- Botones para Jugar y Finalizar -->  
+         <div class="row   text-center">
+                <div class="panel-heading ocultar"><h4>2.- Dar Click en <strong>"Jugar"</strong> cuando encuentres las 5 palabras das click <strong>"Finalizar"</strong></h4></div>
+                <div class="panel-body">
+                        <div class="ocultar">
+                        <button  onclick="Crear();" class="btn btn-success btn-lg"> Jugar</button>
+                        <button id='solve' class="btn btn-danger btn-lg" onclick="detenerse ()" >  Finalizar Completo</button>
+                    </div>
+                </div>
+     <div class="row">
+        <div class="col-md-3">
+            <div id='Palabras'></div>
+        </div>
+    <div class="col-md-9">
+        <div id='juego'></div>   
+            </div>
+                </div>
+ <!-- Script Generar la sopa de letras -->                
+    <script>    
+    
+    var words = [];
+	var gamePuzzle;
+	function Crear() {
+    
+	    datos = listaPalabras[0].textContent.trim().split("×");
+        
+	    for (i = 0; i < (datos.length)-1; i++) {
+	       words.push(datos[i]);
+	    }
+        $('#Juegos').show(); 
+	    gamePuzzle = wordfindgame.create(datos, '#juego', '#Palabras');
+	    var puzzle = wordfind.newPuzzle(datos, { height: 18, width: 18, fillBlanks: false });
+        wordfind.print(puzzle);  
+       
+      }
+        $('#solve').click( function() {wordfindgame.solve(gamePuzzle, words);});
+        
+    </script>
+
+</body>
 </html>
