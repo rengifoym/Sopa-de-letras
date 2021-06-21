@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ingreso A la Sopa</title>
+     <!-- Estilos CSS -->
+     <link rel="stylesheet" type="text/css" href="Css/style.css" media="all">
+     <link rel="stylesheet" type="text/css" href="Css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="Css/jquery-ui.css" >
+     <link rel="stylesheet" type="text/css" href="Css/jquery.tagit.css">
+    <script type="text/javascript">
+    
+    function ir(){
+
+      if( document.form.loguin.value != 0  ){
+          alert ("Escribir las 5 palabras para La sopa de letras ");
+          window.location = "index.html";
+        }
+      }
+
+</script>
+</head>
+<body onload="ir()"><center>
+    <h1> <strong>Comenzar El juego</strong>  </h1>
+    <form name="form" action="Comenzar">
+    <p>Usuario<input type="text" name="loguin" id="idname" required></p>
+    <p>Cedula <input type="text" onkeypress='return validaNumericos(event)'/> </p>
+    <input onclick="ir()" type="button" value="iniciar" class="btn btn-danger mr-2">
+    </form>
+    <script src="Js/wordfindgame.js"></script>
+</center></body>
+</html>
